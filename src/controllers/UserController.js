@@ -1,10 +1,10 @@
-const User = require("../schemas/User");
+const UserModel = require("../models/User");
 
 class UserController {
   create(req, res) {
     const { email, userName, password } = req.body;
 
-    const user = new User({
+    const user = new UserModel({
       email: email,
       userName: userName,
       password: password,
@@ -18,16 +18,16 @@ class UserController {
       .catch((reason) => res.json(reason));
   }
 
-  getUsers(req, res) {
-    User.find()
+  showUsers(req, res) {
+    UserModel.find()
       .then((users) => {
         res.json(users);
       })
       .catch((err) => console.log(err));
   }
 
-  deleteUser(req, res) {
-    User.remove({
+  delete(req, res) {
+    UserModel.deleteOne({
       _id: req.params.id,
     })
       .then(() => {
@@ -44,7 +44,7 @@ class UserController {
 
   index(req, res) {
     const id = req.params.id;
-    User.findById(id, (err, user) => {
+    UserModel.findById(id, (err, user) => {
       if (err) {
         return res.status(404).json({
           message: "Not Found",
