@@ -19,6 +19,18 @@ const UserSchema = new Schema(
       type: String,
       require: "Password is required",
     },
+
+    confirmed: {
+      type: Boolean,
+      default: false,
+    },
+
+    avatar: String,
+    confirm_hash: String,
+    last_seen: {
+      type: Date,
+      default: new Date(),
+    },
   },
 
   {

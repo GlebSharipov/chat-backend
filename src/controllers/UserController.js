@@ -1,6 +1,6 @@
 const UserModel = require("../models/User");
 
-class UserController {
+module.exports = class UserController {
   create(req, res) {
     const { email, userName, password } = req.body;
 
@@ -53,6 +53,4 @@ class UserController {
       res.json(user);
     });
   }
-}
-
-module.exports = UserController;
+};

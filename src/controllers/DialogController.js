@@ -1,7 +1,7 @@
 const DialogModel = require("../models/Dialog");
 const MessageModel = require("../models/Message");
 
-class DialogController {
+module.exports = class DialogController {
   create(req, res) {
     const { partner, author, lastMessage } = req.body;
 
@@ -66,6 +66,4 @@ class DialogController {
       })
       .catch((err) => console.log(err));
   }
-}
-
-module.exports = DialogController;
+};

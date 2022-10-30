@@ -1,6 +1,6 @@
 const MessageModel = require("../models/Message");
 
-class MessageController {
+module.exports = class MessageController {
   create(req, res) {
     const { text, dialogId, user } = req.body;
 
@@ -57,6 +57,4 @@ class MessageController {
         }),
       );
   }
-}
-
-module.exports = MessageController;
+};
