@@ -1,21 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = function createJWTToken(details) {
-  details.sessionData = _.reduce(
-    details.sessionData || {},
-    (memo, curVal, key) => {
-      if (typeof curVal !== "function" && key !== "password") {
-        memo[key] = curVal;
-      }
-
-      return memo;
-    },
-    {},
-  );
-
+module.exports = function createJWTToken(email) {
   let token = jwt.sign(
     {
-      data: details.sessionData,
+      data: email,
     },
     process.env.JWT_SECRET,
     {

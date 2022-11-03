@@ -1,21 +1,58 @@
 const UserModel = require("../models/User");
+const createJWTToken = require("../utils/createJWTToken");
+const bcrypt = require("bcrypt");
 
 module.exports = class UserController {
-  create(req, res) {
+  async register(req, res) {
     const { email, userName, password } = req.body;
+
+    const oldUser = await UserModel.findOne({ email: email });
+
+    if (oldUser) {
+      return res.status(409).send("User Already Exist. Please Login");
+    }
+
+    const token = createJWTToken(email);
+    const encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = new UserModel({
       email: email,
       userName: userName,
-      password: password,
+      password: encryptedPassword,
     });
+
+    user.token = token;
 
     user
       .save()
       .then((obj) => {
         res.send(obj);
       })
-      .catch((reason) => res.json(reason));
+      .catch((err) => res.json(err));
+  }
+
+  async login(req, res) {
+    try {
+      const { email, password } = req.body;
+
+      if (!(email && password)) {
+        res.status(400).send("All input is required");
+      }
+      const user = await UserModel.findOne({ email: email });
+
+      if (user && (await bcrypt.compare(password, user.password))) {
+        if (!user.token) {
+          const token = createJWTToken(email);
+          user.token = token;
+        }
+
+        res.status(200).json(user);
+      } else {
+        res.status(400).send("Invalid Credentials");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   showUsers(req, res) {

@@ -28,11 +28,16 @@ const User = new UserController();
 const Dialog = new DialogController();
 const Message = new MessageController();
 
-mongoose.connect(process.env.MONGO_DB, {
-  useNewUrlParser: true,
-});
+mongoose
+  .connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log("Successfully connected to database");
+  });
 
-app.post("/user/create", User.create);
+app.post("/user/register", User.register);
+app.post("/user/login", User.login);
 app.get("/user", User.showUsers);
 app.get("/user/:id", User.index);
 app.delete("/user/:id", User.delete);

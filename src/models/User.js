@@ -20,6 +20,8 @@ const UserSchema = new Schema(
       require: "Password is required",
     },
 
+    token: { type: String },
+
     confirmed: {
       type: Boolean,
       default: false,
